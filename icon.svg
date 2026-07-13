@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#312e81" />
+    </linearGradient>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbf1c7" />
+      <stop offset="30%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#92400e" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- Background Rounded Square for App Icon -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+  <rect width="500" height="500" x="6" y="6" rx="106" fill="none" stroke="url(#gold-grad)" stroke-width="4" opacity="0.3"/>
+  
+  <!-- Center Gold Badge -->
+  <rect width="260" height="260" x="126" y="106" rx="56" fill="url(#gold-grad)" filter="url(#shadow)" />
+  
+  <!-- Church Icon (FontAwesome Church equivalent path) -->
+  <g transform="translate(156, 136) scale(0.4)" fill="#0f172a">
+    <path d="M256 32a32 32 0 0 0 -32 32V96H160c-17.7 0-32 14.3-32 32v32H64c-17.7 0-32 14.3-32 32v96c0 17.7 14.3 32 32 32h64v96c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32V320h64c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32H384V128c0-17.7-14.3-32-32-32H288V64a32 32 0 0 0 -32-32zM192 384V320h128v64H192zM256 160a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+  </g>
+  
+  <!-- Text Label -->
+  <text x="256" y="420" font-family="sans-serif" font-size="38" font-weight="800" fill="#f8fafc" text-anchor="middle" letter-spacing="2">GMAHK</text>
+  <text x="256" y="460" font-family="sans-serif" font-size="28" font-weight="600" fill="#fbbf24" text-anchor="middle" letter-spacing="4">TERATAI</text>
+</svg>

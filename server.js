@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // Set up SQLite Database
 const dbPath = path.resolve(__dirname, 'database.sqlite');
@@ -110,13 +111,13 @@ app.post('/api/transactions', (req, res) => {
             ]);
         });
         db.run('COMMIT', (err) => {
+            stmt.finalize();
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Transactions saved successfully' });
         });
     });
-    stmt.finalize();
 });
 
 // 3. Save donors (bulk or single)
@@ -134,13 +135,55 @@ app.post('/api/donors', (req, res) => {
             stmt.run([donor]);
         });
         db.run('COMMIT', (err) => {
+            stmt.finalize();
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Donors saved successfully' });
         });
     });
-    stmt.finalize();
+});
+
+// 3a. Save batch all data (transactions & donors) in single request
+app.post(['/api/data', '/api'], (req, res) => {
+    let body = req.body;
+    // Jika dikirim sebagai text/plain (CORS fallback dari GAS frontend)
+    if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch(e) {}
+    }
+    const { transactions = [], donors = [] } = body || {};
+
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        
+        if (Array.isArray(transactions) && transactions.length > 0) {
+            const stmtTrx = db.prepare(`INSERT OR REPLACE INTO transactions 
+                (id, receipt_no, type, date, name, category, amount, alloc_dskt, alloc_kas, alloc_pembangunan, timestamp) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+            transactions.forEach(trx => {
+                stmtTrx.run([
+                    trx.id, trx.receipt_no, trx.type, trx.date, trx.name, trx.category, 
+                    trx.amount, trx.alloc_dskt, trx.alloc_kas, trx.alloc_pembangunan, trx.timestamp
+                ]);
+            });
+            stmtTrx.finalize();
+        }
+
+        if (Array.isArray(donors) && donors.length > 0) {
+            const stmtDonors = db.prepare(`INSERT OR IGNORE INTO donors (name) VALUES (?)`);
+            donors.forEach(donor => {
+                stmtDonors.run([donor]);
+            });
+            stmtDonors.finalize();
+        }
+
+        db.run('COMMIT', (err) => {
+            if (err) {
+                return res.status(500).json({ status: 'error', error: err.message });
+            }
+            res.json({ status: 'success', message: 'All data synchronized successfully' });
+        });
+    });
 });
 // 3b. Delete single donor by name
 app.delete('/api/donors/:name', (req, res) => {

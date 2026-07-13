@@ -39,9 +39,11 @@ Mode ini adalah **pilihan terbaik dan paling direkomendasikan** karena 100% grat
 
 ### A. Persiapan Google Sheets & Apps Script
 1. Buka [Google Sheets](https://sheets.google.com) dan buat spreadsheet baru. Beri nama, misalnya: `Database Keuangan GMAHK Teratai`.
-2. Pada bagian bawah (tab sheet), ganti nama **Sheet1** menjadi `Transactions` (perhatikan huruf besar/kecilnya).
-3. Klik ikon `+` untuk menambahkan sheet baru, lalu beri nama `Donors`.
-4. Pada menu di bagian atas Google Sheets, klik: **Ekstensi > Apps Script**.
+2. *(Opsional)* Anda tidak perlu membuat sheet secara manual karena **`backend.gs` v2.0 otomatis membuat 3 Sheet terpisah** saat sinkronisasi:
+   - **`Pemasukan`** (Untuk mencatat seluruh transaksi kas masuk dengan header biru formal)
+   - **`Pengeluaran`** (Untuk mencatat seluruh transaksi kas keluar dengan header merah formal)
+   - **`Donors`** (Untuk daftar master nama pemberi)
+3. Pada menu di bagian atas Google Sheets, klik: **Ekstensi > Apps Script**.
 5. Di jendela Apps Script yang terbuka, hapus seluruh kode default yang ada di dalam editor.
 6. Buka file `backend.gs` dari folder proyek ini, **salin (copy) seluruh isinya**, lalu **tempel (paste)** ke editor Apps Script tersebut.
 7. Klik ikon **Simpan (Save / ikon disket)** di bagian atas.
@@ -127,6 +129,29 @@ Jika Anda memiliki komputer server khusus, VPS (Virtual Private Server), atau in
 | **Muncul pesan error CORS atau data tidak masuk ke Google Sheets** | Setting izin akses (Who has access) pada saat deployment di Google Apps Script belum diset ke **"Anyone" (Siapa saja)**. | Buka kembali Google Apps Script, klik **Terapkan (Deploy) > Kelola deployment (Manage deployments)**, edit deployment, dan pastikan **Siapa saja (Anyone)** terpilih, lalu simpan. |
 | **Nomor kwitansi loncat / tidak reset saat ganti bulan** | Tanggal transaksi pada form belum disesuaikan dengan bulan yang diinginkan. | Pastikan memilih tanggal transaksi terlebih dahulu di kolom input tanggal. Sistem akan otomatis menghitung nomor urut TRT berdasarkan bulan dan tahun yang dipilih. |
 | **Error `Address already in use :::3000` saat menjalankan Node.js** | Port 3000 sedang digunakan oleh aplikasi lain di komputer Anda. | Tutup aplikasi lain yang menggunakan port 3000, atau ubah nomor port pada file `server.js` di baris `const PORT = process.env.PORT || 3000;` menjadi `3030` atau `8000`. |
+
+---
+
+## 6. 📱 Cara Menginstal Aplikasi ke Hand Phone & Tablet (Progressive Web App)
+
+Aplikasi **GMAHK Teratai** kini dilengkapi dengan teknologi **Progressive Web App (PWA)** sehingga dapat diinstal secara langsung ke **Hand Phone (Android & iPhone)** serta **Tablet (Android Tablet & iPad)** layaknya aplikasi natif:
+
+### Keunggulan Instalasi di HP & Tablet:
+- **Tampilan Layar Penuh (Fullscreen):** Berjalan tanpa bilah alamat browser sehingga layar lebih luas & rapi.
+- **Akses 1x Klik dari Homescreen:** Ikon aplikasi langsung muncul di layar utama perangkat Anda.
+- **Mendukung Mode Offline (Service Worker):** Aset aplikasi otomatis tersimpan di cache sehingga dapat dibuka dengan sangat cepat meskipun koneksi internet sedang lemah.
+
+### A. Panduan Instal di HP & Tablet Android (Google Chrome / Edge)
+1. Buka aplikasi **GMAHK Teratai** di browser Google Chrome atau Microsoft Edge pada HP/Tablet Android Anda.
+2. Klik tombol emas **"Instal Aplikasi"** di bagian atas layar atau banner yang muncul di bawah.
+3. Jika muncul prompt otomatis, klik **"Instal Sekarang"**.
+4. Alternatif manual: Ketuk ikon **Menu Tiga Titik (⋮)** di pojok kanan atas browser -> pilih **"Tambahkan ke Layar Utama" (Add to Home Screen / Install App)**.
+
+### B. Panduan Instal di iPhone & iPad (Apple iOS Safari)
+1. Buka aplikasi **GMAHK Teratai** menggunakan browser **Safari** bawaan Apple.
+2. Ketuk ikon **Bagikan (Share ⎋)** di tengah bawah layar (iPhone) atau atas kanan (iPad).
+3. Gulir ke bawah dan ketuk opsi **"Tambahkan ke Layar Utama" (Add to Home Screen)**.
+4. Ketuk tombol **"Tambah" (Add)** di pojok kanan atas. Ikon **GMAHK TERATAI** akan langsung muncul di halaman utama iPhone/iPad Anda!
 
 ---
 *Dibuat untuk pelayanan Sistem Keuangan GMAHK Jemaat Teratai - Batam.*
